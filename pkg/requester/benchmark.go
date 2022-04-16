@@ -179,6 +179,7 @@ func (b *Benchmark) Run() {
 				if req.Status == "200" {
 					b.SuccessReq++
 				} else {
+					s
 					b.FailReq++
 				}
 
@@ -338,6 +339,7 @@ func (b *Benchmark) ExportResults() error {
 		return err
 	}
 	log.Infof("Folder %s created", folderName)
+
 	// make csv for the summary
 	csvFile, err := os.Create(folderName + "/query_results.csv")
 	if err != nil {
@@ -348,6 +350,7 @@ func (b *Benchmark) ExportResults() error {
 		csvFile.WriteString(req.CsvLine())
 	}
 	log.Infof("CSV %s created", folderName+"/query_results.csv")
+	csvFile.Close()
 
 	// make csv for the requests done
 	bFile, err := os.Create(folderName + "/benchmark_summary.txt")
@@ -357,6 +360,7 @@ func (b *Benchmark) ExportResults() error {
 	summary := b.PrintSummary()
 	bFile.WriteString(summary)
 	log.Infof("Summary created at %s ", folderName+"/benchmark_summary.txt")
+	bFile.Close()
 
 	return nil
 }

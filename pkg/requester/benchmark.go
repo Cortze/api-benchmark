@@ -178,8 +178,6 @@ func (b *Benchmark) Run() {
 
 				if req.Status == "200" {
 					b.SuccessReq++
-				} else if req.Status == "NONE" {
-					b.TimeOut++
 				} else {
 					b.FailReq++
 				}

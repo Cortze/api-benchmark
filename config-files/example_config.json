@@ -6,6 +6,6 @@
     "range-values": ["0:3526300", "0:21063"],
     "query-file": "base_queries.txt",
     "query-backup": "export",
-    "num-queries": 100000,
+    "num-queries": 1000000,
     "concurrent-req": 1
 }

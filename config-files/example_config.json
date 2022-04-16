@@ -1,0 +1,11 @@
+{
+    "benchmark-name": "teku_basic_test",
+    "host-endpoint": "http://localhost:5051",
+    "query": "/eth/v1/beacon/states/{beacon_state_number}/validator_balances?id={validator_id}",
+    "replaces": ["{beacon_state_number}", "{validator_id}"],
+    "range-values": ["0:3526300", "0:21063"],
+    "query-file": "base_queries.txt",
+    "query-backup": "export",
+    "num-queries": 100000,
+    "concurrent-req": 1
+}

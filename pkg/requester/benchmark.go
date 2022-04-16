@@ -82,10 +82,9 @@ func (b *Benchmark) ImportQueryListFromFile(path string) error {
 	scanner := bufio.NewScanner(qfile)
 
 	for scanner.Scan() {
-		if scanner.Text() != "\n" {
-			b.queryList = append(b.queryList, scanner.Text())
-		}
+		b.queryList = append(b.queryList, scanner.Text())
 	}
+	log.Info("readed", len(b.queryList), "queries")
 
 	if err := scanner.Err(); err != nil {
 		return err
@@ -183,7 +182,6 @@ func (b *Benchmark) Run() {
 				}
 
 				// analyze the time
-				// empty base?
 				if b.BestScore == time.Duration(0) {
 					b.BestScore = req.ResponseTime
 					b.BestScoreQuery = req.Query
@@ -266,6 +264,7 @@ func (b *Benchmark) Run() {
 					// compose the query to request form the base and from the random numbers
 					queries = append(queries, b.HostEndpoint+b.queryList[q-len(b.queryList)])
 				}
+				q++
 			}
 
 			log.Debug("nex queries to request \n", queries)

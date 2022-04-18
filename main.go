@@ -28,7 +28,7 @@ func main() {
 	// Set the general log configurations for the entire tool
 	logrus.SetFormatter(utils.ParseLogFormatter("text"))
 	logrus.SetOutput(utils.ParseLogOutput("terminal"))
-	logrus.SetLevel(utils.ParseLogLevel("debug"))
+	logrus.SetLevel(utils.ParseLogLevel("info"))
 
 	app := &cli.App{
 		Name:      CliName,

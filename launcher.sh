@@ -55,7 +55,7 @@ compose_conffile()
     echo '    "query-file":' "\"$QUERY_FILE\"," >> $conf_file
     echo '    "query-backup":' "\"$QUERY_BACKUP\"," >> $conf_file
     echo '    "num-queries":' "$NUM_QUERIES," >> $conf_file
-    echo '    "concurrent-req":' "$3" >> $conf_file
+    echo '    "concurrent-req":' "$3," >> $conf_file
     echo '    "set-query-delay":' "$SET_QUERY_DELAY" >> $conf_file
     echo '}' >> $conf_file
 

@@ -43,6 +43,7 @@ func main() {
 		EnableBashCompletion: true,
 		Commands: []*cli.Command{
 			cmd.RunCommand,
+			cmd.RewardsCommand,
 		},
 	}
 

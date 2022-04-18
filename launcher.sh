@@ -5,7 +5,7 @@ echo "launching Api-Benchmark"
 CLI_NAME="api-benchmark"
 
 # Benchmark Values
-BM_NAME="teku_basic_test"
+BM_NAME="client_ach_10sec_delay"
 HOST_ENDP="http://localhost:5051"
 QUERY="/eth/v1/beacon/states/{beacon_state_number}/validator_balances?id={validator_id}"
 REPLACES='["{beacon_state_number}", "{validator_id}"]'
@@ -13,6 +13,7 @@ RANGE_VALUES='["0:3526300", "0:21063"]'
 QUERY_FILE="base_1M_queries.txt"
 QUERY_BACKUP="import"
 NUM_QUERIES=1000
+SET_QUERY_DELAY=10 # Seconds
 
 declare -a CONCURRENT_RATIOS  
 CONCURRENT_RATIOS=(1 10 100 1000)
@@ -55,6 +56,7 @@ compose_conffile()
     echo '    "query-backup":' "\"$QUERY_BACKUP\"," >> $conf_file
     echo '    "num-queries":' "$NUM_QUERIES," >> $conf_file
     echo '    "concurrent-req":' "$3" >> $conf_file
+    echo '    "set-query-delay":' "$SET_QUERY_DELAY" >> $conf_file
     echo '}' >> $conf_file
 
 }

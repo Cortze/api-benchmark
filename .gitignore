@@ -1,1 +1,7 @@
+# Binary file
 api-benchmark
+
+# Python virtual environment
+plotter/venv/
+plotter/__pycache__/
+

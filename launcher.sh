@@ -10,7 +10,7 @@ HOST_ENDP="http://localhost:5051"
 QUERY="/eth/v1/beacon/states/{beacon_state_number}/validator_balances?id={validator_id}"
 REPLACES='["{beacon_state_number}", "{validator_id}"]'
 RANGE_VALUES='["0:3526300", "0:21063"]'
-QUERY_FILE="base_100000_queries.txt"
+QUERY_FILE="base_1M_queries.txt"
 QUERY_BACKUP="import"
 NUM_QUERIES=1000
 

@@ -300,6 +300,9 @@ func (b *Benchmark) Run() {
 				}()
 			}
 			wgr.Wait()
+			if b.conf.SetQueryDelay != 0 {
+				time.Sleep(time.Duration(b.conf.SetQueryDelay) * time.Second)
+			}
 		}
 		log.Infof("%d number of queries requeted", i)
 		wg.Done()

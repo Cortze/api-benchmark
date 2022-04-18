@@ -1,0 +1,10 @@
+/eth/v1/beacon/states/819681/validator_balances?id=17880
+/eth/v1/beacon/states/2506647/validator_balances?id=5558
+/eth/v1/beacon/states/2116681/validator_balances?id=4743
+/eth/v1/beacon/states/3428725/validator_balances?id=20249
+/eth/v1/beacon/states/188756/validator_balances?id=11523
+/eth/v1/beacon/states/2678794/validator_balances?id=18409
+/eth/v1/beacon/states/1709162/validator_balances?id=59
+/eth/v1/beacon/states/2448828/validator_balances?id=16559
+/eth/v1/beacon/states/1287611/validator_balances?id=5816
+/eth/v1/beacon/states/1961337/validator_balances?id=13340

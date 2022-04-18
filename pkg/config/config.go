@@ -18,6 +18,7 @@ type Config struct {
 	NumQueries    int      `json:"num-queries"`
 	QueryBackup   string   `json:"query-backup"`
 	ConcurrentReq int      `json:"concurrent-req"`
+	SetQueryDelay int      `json:"set-query-delay"`
 }
 
 func NewConfig() *Config {

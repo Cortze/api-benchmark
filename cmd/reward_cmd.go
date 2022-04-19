@@ -44,7 +44,7 @@ var logRewardsRewards = logrus.WithField(
 )
 
 var timeout = 30
-var query = "http://141.94.174.126:5052/eth/v1/beacon/states/{slot}/validator_balances?id={indexes}"
+var query = "http://localhost:5052/eth/v1/beacon/states/{slot}/validator_balances?id={indexes}"
 
 // CrawlAction is the function that is called when running `eth2`.
 func LaunchRewardCalculator(c *cli.Context) error {

@@ -5,8 +5,8 @@ echo "launching Api-Benchmark"
 CLI_NAME="api-benchmark"
 
 # Benchmark Values
-BM_NAME="client_ach_10sec_delay"
-HOST_ENDP="http://localhost:5051"
+BM_NAME="prysm_grpc_arch_10sec_delay"
+HOST_ENDP="localhost:4000"
 QUERY="/eth/v1/beacon/states/{beacon_state_number}/validator_balances?id={validator_id}"
 REPLACES='["{beacon_state_number}", "{validator_id}"]'
 RANGE_VALUES='["0:3526300", "0:21063"]'
@@ -16,7 +16,7 @@ NUM_QUERIES=1000
 SET_QUERY_DELAY=10 # Seconds
 
 declare -a CONCURRENT_RATIOS  
-CONCURRENT_RATIOS=(1 10 100 1000)
+CONCURRENT_RATIOS=(1)
 echo "Concurrent ratios for the test: ${CONCURRENT_RATIOS[*]}"
 
 CONFIG_FILE_FOLDER="config-files"

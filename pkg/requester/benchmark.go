@@ -4,14 +4,18 @@ import (
 	"bufio"
 	"context"
 	"fmt"
-	"net/http"
+	"strconv"
+
 	"os"
 	"os/signal"
 	"strings"
 	"sync"
 	"time"
 
+	types "github.com/prysmaticlabs/eth2-types"
+	ethpb "github.com/prysmaticlabs/prysm/v2/proto/prysm/v1alpha1"
 	"github.com/sirupsen/logrus"
+	"google.golang.org/grpc"
 
 	"github.com/cortze/api-benchmark/pkg/config"
 	"github.com/cortze/api-benchmark/pkg/utils"
@@ -236,10 +240,15 @@ func (b *Benchmark) Run() {
 	go func() {
 		log.Info("requester Go Routine initialized")
 
-		// generate a http.Client to manage timeouts
-		httpCli := http.Client{
-			Timeout: time.Duration(timeout) * time.Second,
+		// Generate the Prysm client
+		dialCtx, err := grpc.DialContext(ctx, b.conf.HostEndpoint, grpc.WithTimeout(time.Duration(timeout)*time.Second), grpc.WithInsecure())
+		if err != nil {
+			log.Errorln("unable to generate dial context for prysm client -" + err.Error())
+			return
 		}
+
+		beaconClient := ethpb.NewBeaconChainClient(dialCtx)
+
 		// check if there are enough queries as the total of
 
 		// requester main loop
@@ -274,9 +283,35 @@ func (b *Benchmark) Run() {
 				wgr.Add(1)
 				queryidx := j
 				go func() {
-					// request the query
+					// parse de epoch and val index from the query
+					semicoloms := strings.Split(queries[queryidx], "/")
+					equals := strings.Split(semicoloms[len(semicoloms)-1], "=")
+
+					auxSlot, _ := strconv.Atoi(semicoloms[5])
+					auxIdx, _ := strconv.Atoi(equals[1])
+
+					epoch := uint64(auxSlot / 32)
+					index := uint64(auxIdx)
+
+					log.Debugf("requesting gRPC for epoch %d and valIdx %d\n", epoch, index)
+					var i []types.ValidatorIndex
+					i = append(i, types.ValidatorIndex(index))
+
+					le := &ethpb.ListValidatorBalancesRequest_Epoch{
+						Epoch: types.Epoch(epoch),
+					}
+					// compose the Prysm Validator Balance Queries
+					valBalanceQuery := &ethpb.ListValidatorBalancesRequest{
+						QueryFilter: le,
+						Indices:     i,
+					}
+
+					// request the query through the prysm rRPC
 					tnow := time.Now()
-					resp, err := httpCli.Get(queries[queryidx])
+					// might be necessary to get pubkeys from the val indexes
+					resp, err := beaconClient.ListValidatorBalances(ctx, valBalanceQuery)
+
+					// rest of the
 					log.Debug(queryidx, "response to query:", queries[queryidx], "\n", resp)
 					reqTime := time.Since(tnow)
 
@@ -284,10 +319,10 @@ func (b *Benchmark) Run() {
 					//
 					if resp != nil {
 						// compose the Request obj
-						reqStatus = NewRequest(queries[queryidx], fmt.Sprintf("%d", resp.StatusCode), tnow, reqTime, "NONE")
+						reqStatus = NewRequest(queries[queryidx], fmt.Sprintf("200"), tnow, reqTime, "NONE")
 					} else {
 						// compose the Request obj
-						reqStatus = NewRequest(queries[queryidx], fmt.Sprintf("NONE"), tnow, reqTime, "NONE")
+						reqStatus = NewRequest(queries[queryidx], fmt.Sprintf("400"), tnow, reqTime, "NONE")
 					}
 					if err != nil {
 						reqStatus.Error = err.Error()
